@@ -1,27 +1,536 @@
 <!doctype html>
 <html lang="ja">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>The ants information</title>
-  </head>
-  <body>
-    <h1>The ants の情報ページ</h1>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    <!-- Optional JavaScript; choose one of the two! -->
+  <title>The ants information</title>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <!-- Style seets -->
+</head>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-    -->
-  </body>
+<body>
+  <div class="container">
+    <div class="row bg-secondary sticky-top">
+      <div class="col-9 my-2">
+        <h1 class="text-white">コロニー行動</h1>
+      </div>
+      <div class="col-3 my-2">
+        <button type="button" class="btn btn-light" onclick="reWrite()">更新</button>
+      </div>
+      <!--Bootstrap Bundle with Popper -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    </div>
+
+    <div class="row my-3">
+      <div id="list" class="col-12"></div>
+    </div>
+  </div>
+  <script>
+    // データのキーは 曜日１桁、時刻を8で割った余り1桁
+    // 曜日は 0 (日曜日) から6 (土曜日) まで
+    var colony_data_list =
+    {
+      // 日曜日(0)
+      "00": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+          "建築戦闘力（+1）": "1000",
+          "建築加速（1分）": "900"
+        }
+      },
+      "01": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+          "加速（+1）": "1",
+          "中立強化（略）": "N/A"
+        }
+      },
+      "02": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+          "建築加速（1分）": "400",
+          "進化加速（1分）": "400",
+          "孵化加速（1分）": "400"
+        }
+      },
+      "03": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "04": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "05": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "06": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "07": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      // 月曜日(1)
+      "10": {
+        "name": "蟻塚建設",
+        "requirement": "小",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "11": {
+        "name": "コロニー進化",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "12": {
+        "name": "蟻塚建設",
+        "requirement": "小",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "13": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "△",
+        "item": {
+        }
+      },
+      "14": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "△",
+        "item": {
+        }
+      },
+      "15": {
+        "name": "蟻塚建設",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "16": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "17": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      // 火曜日(2)
+      "20": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "21": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "22": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "23": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "24": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "25": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "26": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "27": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      // 水曜日(3)
+      "30": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "31": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "32": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "33": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "34": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "35": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "36": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "37": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      // 木曜日(4)
+      "40": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "41": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "42": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "43": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "44": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "45": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "46": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "47": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      // 金曜日(5)
+      "50": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "51": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "52": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "53": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "54": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "55": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "56": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "57": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      // 土曜日(6)
+      "60": {
+        "name": "蟻塚建設",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "61": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "62": {
+        "name": "全面に発展",
+        "requirement": "大",
+        "recommendation": "×",
+        "item": {
+        }
+      },
+      "63": {
+        "name": "コロニー進化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "64": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "〇",
+        "item": {
+        }
+      },
+      "65": {
+        "name": "兵隊アリを孵化",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "66": {
+        "name": "全面に発展",
+        "requirement": "小",
+        "recommendation": "◎",
+        "item": {
+        }
+      },
+      "67": {
+        "name": "全面に発展",
+        "requirement": "中",
+        "recommendation": "◎",
+        "item": {
+        }
+      }
+    };
+
+    // 画面初回読み込み時
+    window.onload = function () {
+      reWrite();
+    }
+    function reWrite() {
+
+      // 基準となる時刻
+      const date = new Date();
+
+      // リスト表示部の要素取得
+      target = document.getElementById("list");
+
+      // 既存の子要素全削除
+      while (target.firstChild) {
+        target.removeChild(target.firstChild);
+      }
+
+      // リストデータ作成
+      for (let i = 0; i < 12; i++) {
+        target.appendChild(buildDataFrame(date));
+        date.setHours(date.getHours() + 1);
+      }
+
+    }
+    // リストの１コマを作成
+    function buildDataFrame(date) {
+      // 該当時刻のコロニーデータ取得
+      var colonyData = colony_data_list[date2key(date)];
+
+      // 枠組み構築
+      var row = document.createElement("div");
+      row.setAttribute("class", "row mx-1 my-3 py-2 border");
+      switch (colonyData['recommendation']) {
+        case '◎': row.setAttribute("style", "background-color: #98fb98");
+          break;
+        case '〇': row.setAttribute("style", "background-color: #b0e0e6");
+          break;
+        case '△': row.setAttribute("style", "background-color: #ffffe0");
+          break;
+        case '×': row.setAttribute("style", "background-color: #f08080");
+          break;
+      }
+      var header = document.createElement("div");
+      header.setAttribute("class", "col-12 h5");
+      row.appendChild(header);
+      header.textContent =
+        colonyData['recommendation'] + " " +
+        sampleDate(date, "MM/DD(W) hh:00" + " " +
+          colonyData['name']);
+
+      for (key in colonyData['item']) {
+        var itemKey = document.createElement("div");
+        itemKey.setAttribute("class", "col-8");
+        row.appendChild(itemKey);
+        itemKey.textContent = key;
+
+        var itemValue = document.createElement("div");
+        itemValue.setAttribute("class", "col-4");
+        row.appendChild(itemValue);
+        itemValue.textContent = colonyData['item'][key];
+      }
+
+      return row;
+    }
+    // 現在時刻を表示
+    function sampleDate(date, format) {
+      var weekStr = new String('日月火水木金土');
+      format = format.replace(/YYYY/, date.getFullYear());
+      format = format.replace(/MM/, ('0' + (date.getMonth() + 1)).slice(-2));
+      format = format.replace(/DD/, ('0' + date.getDate()).slice(-2));
+      format = format.replace(/W/, weekStr.charAt(date.getDay()));
+      format = format.replace(/hh/, ('0' + date.getHours()).slice(-2));
+      format = format.replace(/mm/, ('0' + date.getMinutes()).slice(-2));
+      return format;
+    }
+    // 時刻をデータキーへ変換
+    function date2key(date) {
+      var key = "wh";
+      key = key.replace(/w/, date.getUTCDay());
+      key = key.replace(/h/, date.getUTCHours() % 8);
+      return key;
+    }
+  </script>
+
+</body>
+
 </html>
