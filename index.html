@@ -583,10 +583,6 @@
 
     // 画面初回読み込み時
     window.onload = function () {
-      reWrite();
-    }
-    function reWrite() {
-
       // 基準となる時刻
       const date = new Date();
 
@@ -603,7 +599,10 @@
         target.appendChild(buildDataFrame(date));
         date.setHours(date.getHours() + 1);
       }
-
+    }
+    // 画面の更新
+    function reWrite() {
+      location.reload(false);
     }
     // リストの１コマを作成
     function buildDataFrame(date) {
