@@ -54,8 +54,22 @@
         "requirement": "大",
         "recommendation": "×",
         "item": {
-          "加速（+1）": "400",
-          "中立強化（略）": "N/A"
+          "中立生物を星2へ": "200000",
+          "中立生物を星3へ": "400000",
+          "中立生物を星4へ": "800000",
+          "中立生物を星5へ": "1000000",
+          "中立生物を星6へ": "2000000",
+          "中立生物を星7へ": "3000000",
+          "中立生物を星8へ": "4500000",
+          "中立生物を星9へ": "6000000",
+          "中立生物を星10へ": "8000000",
+          "中立生物を星11へ": "10000000",
+          "中立生物残骸消耗（1個）": "400",
+          "中立生物残骸を獲得（1個）": "200",
+          "中立生物飼料を消費（1匹）": "50",
+          "中立生物飼料を養殖（1匹）": "100",
+          "中立生物を孵化（1匹）": "200000",
+          "加速全般（1分）": "400",
         }
       },
       "02": {
@@ -610,7 +624,7 @@
           break;
       }
       var header = document.createElement("div");
-      header.setAttribute("class", "col-12 h5");
+      header.setAttribute("class", "col-12 h6");
       row.appendChild(header);
       header.textContent =
         colonyData['recommendation'] + " " +
@@ -624,7 +638,7 @@
         itemKey.textContent = key;
 
         var itemValue = document.createElement("div");
-        itemValue.setAttribute("class", "col-4");
+        itemValue.setAttribute("class", "col-4 text-end");
         row.appendChild(itemValue);
         itemValue.textContent = colonyData['item'][key];
       }
